@@ -60,8 +60,8 @@ def predict_and_explain(model, x_train, input_df, model_name):
 def run_model_a_page():
     st.title("EOMG 模型預測頁面")
     # 模型 & 資料（你之後替換正確路徑）
-    with open("MG_ICU_SHAP_XGB_LOMG.pkl", "rb") as f:
-        model_dict = pickle.load(f)
+    model_dict = pickle.load(open("MG_ICU_SHAP_XGB_EOMG.pkl", "rb"))
+    model = model_dict['model']
     x = pd.read_csv("MG_ICU_SHAP_Model_Data_SubGroup2_Age50D_New_FeaName.csv")
     x_train = x.drop(columns=[ "Y"])
     # 輸入變數
