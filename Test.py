@@ -128,11 +128,11 @@ def run_model_a_page():
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
         # 印出模型實際特徵
-        model_feature_names = model.get_booster().feature_names
+        model.predict(input_df)
+
         
 
-        # 僅保留模型實際特徵
-        input_df = input_df[model_feature_names]
+        
         
         predict_and_explain(model, x_train, input_df, "模型 A")
 
