@@ -19,13 +19,11 @@ model_choice = st.sidebar.selectbox("請選擇要執行的模型", [
 # 共用預測＋SHAP 解釋函式
 def predict_and_explain(model, x_train, input_df, model_name):
     st.subheader(" 預測結果")
-    
+
     try:
-        # 確保順序正確（只保留模型訓練時的特徵）
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
-        background = x_train[model_feature_names]
-
+        background = x_train[model_feature_names].sample(50, random_state=42)
 
         # 預測
         proba = model.predict_proba(input_df)[0]
@@ -36,7 +34,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         else:
             st.success("預測結果：Not ICU admission")
 
-        # SHAP 解釋
+        # SHAP 解釋（使用 kernel explainer）
         explainer = shap.KernelExplainer(model.predict_proba, background)
         shap_values = explainer.shap_values(input_df)
 
@@ -49,13 +47,13 @@ def predict_and_explain(model, x_train, input_df, model_name):
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
-            
             show=False
         )
         st.pyplot(fig)
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
+
 
 
 # ------------------------- 模型 A -------------------------
@@ -128,7 +126,7 @@ def run_model_a_page():
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
         # 印出模型實際特徵
-        model.predict(input_df)
+        
 
         
 
