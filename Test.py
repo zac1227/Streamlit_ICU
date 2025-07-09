@@ -18,39 +18,49 @@ model_choice = st.sidebar.selectbox("請選擇要執行的模型", [
 # ------------------------- 共用函數：預測 + SHAP -------------------------
 # 共用預測＋SHAP 解釋函式
 def predict_and_explain(model, x_train, input_df, model_name):
-    st.subheader(" 預測結果")
+    import shap
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import numpy as np
+    import streamlit as st
+
+    st.subheader("預測結果")
 
     try:
-        # 取出模型訓練時的特徵名稱
+        # 取特徵名稱並篩選順序
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
         background = x_train[model_feature_names].sample(50, random_state=42)
 
-        # 預測結果
+        # 模型預測機率 & 類別
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
 
+        # 顯示預測結果
         if pred_class == 1:
             st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
 
-        # ✅ 包裝 predict_proba 避免 shap 誤用 feature_names_in_
+        # 包裝 predict_proba：確保輸入為 DataFrame，避免 sklearn 標籤錯誤
         def safe_predict_proba(X):
             X_df = pd.DataFrame(X, columns=model_feature_names)
             return model.predict_proba(X_df)
 
-        # SHAP 解釋
+        # 建立 SHAP 解釋器
         explainer = shap.KernelExplainer(safe_predict_proba, background)
         shap_values = explainer.shap_values(input_df)
 
-        # 顯示 SHAP waterfall 圖
+        # 決定要解釋哪個類別（固定解釋 ICU admission = class 1）
+        class_index = list(model.classes_).index(1)
+
+        # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_values[1][0],
-                base_values=explainer.expected_value[1],
+                values=shap_values[class_index][0],
+                base_values=explainer.expected_value[class_index],
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
@@ -60,7 +70,6 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
-
 
 
 
