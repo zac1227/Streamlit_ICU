@@ -21,11 +21,12 @@ def predict_and_explain(model, x_train, input_df, model_name):
     st.subheader(" 預測結果")
 
     try:
+        # 取出模型訓練時的特徵名稱
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
         background = x_train[model_feature_names].sample(50, random_state=42)
 
-        # 預測
+        # 預測結果
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
 
@@ -34,10 +35,16 @@ def predict_and_explain(model, x_train, input_df, model_name):
         else:
             st.success("預測結果：Not ICU admission")
 
-        # SHAP 解釋（使用 kernel explainer）
-        explainer = shap.KernelExplainer(model.predict_proba, background)
+        # ✅ 包裝 predict_proba 避免 shap 誤用 feature_names_in_
+        def safe_predict_proba(X):
+            X_df = pd.DataFrame(X, columns=model_feature_names)
+            return model.predict_proba(X_df)
+
+        # SHAP 解釋
+        explainer = shap.KernelExplainer(safe_predict_proba, background)
         shap_values = explainer.shap_values(input_df)
 
+        # 顯示 SHAP waterfall 圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
@@ -53,6 +60,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
+
 
 
 
