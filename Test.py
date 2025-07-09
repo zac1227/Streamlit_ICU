@@ -64,8 +64,8 @@ def run_model_a_page():
     # 模型 & 資料（你之後替換正確路徑）
     import xgboost as xgb
     model = xgb.XGBClassifier()
-    model.load_model(r"C:\Users\a0986\Streamlit_Project\ICU\Models\MG_ICU_SHAP_XGB_EOMG.json")
-    x = pd.read_csv(r"C:\Users\a0986\Streamlit_Project\ICU\Streamlit\MG_ICU_SHAP_Model_Data_SubGroup2_Age50D_New_FeaName.csv")
+    model.load_model(r"MG_ICU_SHAP_XGB_EOMG.json")
+    x = pd.read_csv(r"MG_ICU_SHAP_Model_Data_SubGroup2_Age50D_New_FeaName.csv")
     x_train = x.drop(columns=[ "Y"])
     # 輸入變數
     Gender = st.sidebar.radio("Gender", options=[1, 2])
