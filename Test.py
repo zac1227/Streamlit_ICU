@@ -123,7 +123,7 @@ def run_model_a_page():
     "Chronic lung disease": Chronic,
     "Good syndrome": Good,
     "Disease duration (month)": Disease_duration,
-    #"MGFA clinical classification": 0,
+    "MGFA clinical classification": 0,
     "Prednisolone daily dose before admission": Prednisolone,
     "Immunosuppressant at admission": Immunosuppressant,
     "Anti-MuSK": Anti_MuSK,
