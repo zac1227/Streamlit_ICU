@@ -84,7 +84,7 @@ def run_model_a_page():
     model = xgb.XGBClassifier()
     model.load_model(r"MG_ICU_SHAP_XGB_EOMG_1.json")
     x = pd.read_csv(r"MG_ICU_SHAP_Model_Data_SubGroup2_Age50D_New_FeaName.csv")
-    x_train = x.drop(columns=[ "Y"])
+    x_train = x.drop(columns=[ "Y","MGFA clinical classification"])
     # 輸入變數
     Gender = st.sidebar.radio("Gender", options=[1, 2])
     BMI = st.sidebar.number_input("BMI", 10.0, 40.0, 22.5)
