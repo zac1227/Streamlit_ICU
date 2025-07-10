@@ -27,7 +27,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
     st.subheader("預測結果")
 
     try:
-        # 取特徵名稱並篩選順序
+        # 特徵篩選
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
         background = x_train[model_feature_names].sample(50, random_state=42)
@@ -45,16 +45,22 @@ def predict_and_explain(model, x_train, input_df, model_name):
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(input_df)
 
-        # 決定要解釋哪個類別（固定解釋 ICU admission = class 1）
-        class_index = list(model.classes_).index(1)
+        # 判斷 shap_values 是不是多類別（list）
+        if isinstance(shap_values, list) and len(shap_values) > 1:
+            class_index = list(model.classes_).index(1)
+            shap_val = shap_values[class_index][0]
+            base_val = explainer.expected_value[class_index]
+        else:
+            shap_val = shap_values[0]
+            base_val = explainer.expected_value
 
         # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_values[1][0],
-                base_values=explainer.expected_value[1],
+                values=shap_val,
+                base_values=base_val,
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
@@ -64,6 +70,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
+
 
 
 
@@ -154,11 +161,4 @@ if model_choice == "EOMG":
     run_model_a_page()
 
 
-#with tab1:
-#    run_model_a_page()
-#with tab2:
-#    run_model_b_page()
-#with tab3:
-#    run_model_c_page()
-#with tab4:
-#    run_model_d_page()    
+   
