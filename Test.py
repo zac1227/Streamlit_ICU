@@ -42,7 +42,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
             st.success("預測結果：Not ICU admission")
 
         # SHAP 解釋
-        explainer = shap.KernelExplainer(model.predict_proba, background)
+        explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(input_df)
 
         # 決定要解釋哪個類別（固定解釋 ICU admission = class 1）
