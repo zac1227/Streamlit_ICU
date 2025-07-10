@@ -27,6 +27,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
     st.subheader("預測結果")
 
     try:
+        
         # 特徵篩選
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
@@ -142,7 +143,11 @@ def run_model_a_page():
 
     if st.sidebar.button("預測模型"):
         # 用 input_dict 建立 DataFrame
-       # 建立 DataFrame（按照 x_train 的欄位順序）
+        # 建立 DataFrame（按照 x_train 的欄位順序）
+        missing_cols = [col for col in x_train.columns if col not in input_dict]
+        if missing_cols:
+            st.error(f"以下欄位在 input_dict 中缺失：{missing_cols}")
+            st.stop()
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
         # 印出模型實際特徵
         
