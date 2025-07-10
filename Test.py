@@ -32,23 +32,17 @@ def predict_and_explain(model, x_train, input_df, model_name):
         input_df = input_df[model_feature_names]
         background = x_train[model_feature_names].sample(50, random_state=42)
 
-        # 模型預測機率 & 類別
+        # 預測
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
 
-        # 顯示預測結果
         if pred_class == 1:
             st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
 
-        # 包裝 predict_proba：確保輸入為 DataFrame，避免 sklearn 標籤錯誤
-        def safe_predict_proba(X):
-            X_df = pd.DataFrame(X, columns=model_feature_names)
-            return model.predict_proba(X_df)
-
-        # 建立 SHAP 解釋器
-        explainer = shap.KernelExplainer(safe_predict_proba, background)
+        # SHAP 解釋
+        explainer = shap.KernelExplainer(model.predict_proba, background)
         shap_values = explainer.shap_values(input_df)
 
         # 決定要解釋哪個類別（固定解釋 ICU admission = class 1）
@@ -59,8 +53,8 @@ def predict_and_explain(model, x_train, input_df, model_name):
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_values[class_index][0],
-                base_values=explainer.expected_value[class_index],
+                values=shap_values[1][0],
+                base_values=explainer.expected_value[1],
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
