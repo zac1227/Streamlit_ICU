@@ -94,7 +94,7 @@ def run_model_a_page():
     Chronic = st.sidebar.number_input("Chronic lung disease", 0, 1, 0)
     Good = st.sidebar.number_input("Good syndrome", 0, 1, 0)
     Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 120, 0)
-    MGFA = st.sidebar.number_input("MGFA clinical classification", 0, 120, 0)
+    #MGFA = st.sidebar.number_input("MGFA clinical classification", 0, 120, 0)
     Prednisolone = st.sidebar.number_input("Prednisolone daily dose before admission", 0, 100, 0)
     Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 1, 0)
     Anti_MuSK = st.sidebar.number_input("Anti-MuSK", 0, 1, 0)
@@ -121,7 +121,7 @@ def run_model_a_page():
     "Chronic lung disease": Chronic,
     "Good syndrome": Good,
     "Disease duration (month)": Disease_duration,
-    "MGFA clinical classification": MGFA,
+    #"MGFA clinical classification": MGFA,
     "Prednisolone daily dose before admission": Prednisolone,
     "Immunosuppressant at admission": Immunosuppressant,
     "Anti-MuSK": Anti_MuSK,
