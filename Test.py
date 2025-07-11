@@ -236,7 +236,7 @@ def run_model_b_page():
 
 if model_choice == "EOMG":
     run_model_a_page()
-elif model_choice == "LOMG":
+else model_choice == "LOMG":
     run_model_b_page()
 
 
