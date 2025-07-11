@@ -135,21 +135,16 @@ def run_model_a_page():
 
     if st.sidebar.button("預測模型"):
         # 用 input_dict 建立 DataFrame
-        # 建立 DataFrame（按照 x_train 的欄位順序）
-        missing_cols = [col for col in x_train.columns if col not in input_dict]
-        if missing_cols:
-            st.error(f"以下欄位在 input_dict 中缺失：{missing_cols}")
-            st.stop()
+       # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
         # 印出模型實際特徵
+        model_feature_names = model.get_booster().feature_names
         
 
-        
-
-        
+        # 僅保留模型實際特徵
+        input_df = input_df[model_feature_names]
         
         predict_and_explain(model, x_train, input_df, "模型 A")
-
 
 
 
