@@ -33,7 +33,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         background = x_train[model_feature_names].sample(50, random_state=42)
 
         # 預測機率與類別
-        proba = model.predict_proba(input_df)[0]
+        proba = model.predict_proba(input_df)[1]
         pred_class = int(np.argmax(proba))
         pred_proba = proba[pred_class]
 
