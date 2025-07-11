@@ -49,12 +49,13 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
         # 判斷 shap_values 是不是多類別（list）
         if isinstance(shap_values, list) and len(shap_values) > 1:
-            class_index = list(model.classes_).index(1)
+            class_index = pred_class  # 用模型實際預測的類別
             shap_val = shap_values[class_index][0]
             base_val = explainer.expected_value[class_index]
         else:
             shap_val = shap_values[0]
             base_val = explainer.expected_value
+
 
         # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
