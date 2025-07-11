@@ -42,7 +42,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         st.success(f"預測結果：{label}（類別：{pred_class}，機率：{pred_proba:.2f}）")
 
         # SHAP 解釋器（用機率空間）
-        explainer = shap.TreeExplainer(model, model_output="probability", feature_perturbation="interventional")
+        explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(input_df)
 
         # 根據預測類別選擇對應 SHAP 值
