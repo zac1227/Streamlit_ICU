@@ -16,7 +16,6 @@ model_choice = st.sidebar.selectbox("請選擇要執行的模型", [
 
 
 # ------------------------- 共用函數：預測 + SHAP -------------------------
-# 共用預測＋SHAP 解釋函式
 def predict_and_explain(model, x_train, input_df, model_name):
     import shap
     import matplotlib.pyplot as plt
@@ -28,42 +27,50 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     try:
         # 特徵對齊
-        # 確保順序正確（只保留模型訓練時的特徵）
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
-        background = x_train[model_feature_names]
+        background = x_train[model_feature_names].sample(50, random_state=42)
 
-         # 預測
+        # 預測
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
+        pred_proba = proba[pred_class]
 
         if pred_class == 1:
             st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
-        background_np = background.values
-        input_df_np = input_df.values
-        predict_fn = lambda x:model.predict_proba(x)
-        # SHAP 解釋
-        explainer = shap.KernelExplainer(predict_fn, background.np)
-        shap_values = explainer.shap_values(input_df.np)
 
+        # SHAP 解釋器（直接用 XGBoost tree 模型，且使用機率空間）
+        explainer = shap.TreeExplainer(
+            model, 
+            data=background, 
+            model_output="probability", 
+            feature_perturbation="interventional"
+        )
+        shap_values = explainer.shap_values(input_df)
+
+        # 選擇對應類別的 SHAP 解釋值
+        shap_val = shap_values[pred_class][0]
+        base_val = explainer.expected_value[pred_class]
+
+        # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_values[1][0],
-                base_values=explainer.expected_value[1],
+                values=shap_val,
+                base_values=base_val,
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
-            
             show=False
         )
         st.pyplot(fig)
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
+
 
 
 
