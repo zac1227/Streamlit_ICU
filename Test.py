@@ -27,37 +27,33 @@ def predict_and_explain(model, x_train, input_df, model_name):
     st.subheader("預測結果")
 
     try:
-        
-        # 特徵篩選
+        # 特徵對齊
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
         background = x_train[model_feature_names].sample(50, random_state=42)
 
-        # 預測
+        # 預測機率與類別
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
+        pred_proba = proba[pred_class]
 
-        if pred_class == 1:
-            st.success("預測結果：ICU admission")
-        else:
-            st.success("預測結果：Not ICU admission")
+        # 顯示預測結果
+        label = "ICU admission" if pred_class == 1 else "Not ICU admission"
+        st.success(f"預測結果：{label}（類別：{pred_class}，機率：{pred_proba:.2f}）")
 
-        # SHAP 解釋
+        # SHAP 解釋器（用機率空間）
         explainer = shap.TreeExplainer(model, model_output="probability", feature_perturbation="interventional")
         shap_values = explainer.shap_values(input_df)
 
-
-        # 判斷 shap_values 是不是多類別（list）
+        # 根據預測類別選擇對應 SHAP 值
         if isinstance(shap_values, list) and len(shap_values) > 1:
-            class_index = pred_class  # 用模型實際預測的類別
-            shap_val = shap_values[class_index][0]
-            base_val = explainer.expected_value[class_index]
+            shap_val = shap_values[pred_class][0]
+            base_val = explainer.expected_value[pred_class]
         else:
             shap_val = shap_values[0]
             base_val = explainer.expected_value
 
-
-        # 畫圖
+        # 畫 SHAP Waterfall 圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
@@ -73,6 +69,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     except Exception as e:
         st.error(f"發生錯誤：{e}")
+
 
 
 
