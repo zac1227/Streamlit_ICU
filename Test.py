@@ -34,33 +34,27 @@ def predict_and_explain(model, x_train, input_df, model_name):
         # 預測
         proba = model.predict_proba(input_df)[0]
         pred_class = int(np.argmax(proba))
-        pred_proba = proba[pred_class]
+        
 
         if pred_class == 1:
             st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
 
-        # SHAP 解釋器（直接用 XGBoost tree 模型，且使用機率空間）
-        explainer = shap.TreeExplainer(
-            model, 
-        )
+        # SHAP 解釋
+        explainer = shap.KernelExplainer(model.predict_proba, background)
         shap_values = explainer.shap_values(input_df)
 
-        # 選擇對應類別的 SHAP 解釋值
-        shap_val = shap_values[pred_class][0]
-        base_val = explainer.expected_value[pred_class]
-        
-        # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_val,
-                base_values=base_val,
+                values=shap_values[1][0],
+                base_values=explainer.expected_value[1],
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
+            
             show=False
         )
         st.pyplot(fig)
