@@ -22,7 +22,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
     import pandas as pd
     import numpy as np
     import streamlit as st
-
+    import xgboost as xgb
     st.subheader("預測結果")
 
     try:
