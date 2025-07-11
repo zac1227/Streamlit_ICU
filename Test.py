@@ -44,16 +44,13 @@ def predict_and_explain(model, x_train, input_df, model_name):
         # SHAP 解釋器（直接用 XGBoost tree 模型，且使用機率空間）
         explainer = shap.TreeExplainer(
             model, 
-            data=background, 
-            model_output="probability", 
-            feature_perturbation="interventional"
         )
         shap_values = explainer.shap_values(input_df)
 
         # 選擇對應類別的 SHAP 解釋值
         shap_val = shap_values[pred_class][0]
         base_val = explainer.expected_value[pred_class]
-        print(shap_val, base_val)
+        
         # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
