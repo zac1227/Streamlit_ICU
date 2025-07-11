@@ -238,7 +238,7 @@ def run_model_c_page():
     model = xgb.XGBClassifier()
     model.load_model(r"MG_ICU_SHAP_XGB_Thymoma.json")
     x = pd.read_csv(r"MG_ICU_SHAP_Model_Data_SubGroup1_X9_1_FeaName.csv")
-    x_train = x.drop(columns=[ "Y","MGFA clinical classification"])
+    x_train = x.drop(columns=[ "Y"])
     # 輸入變數
     Gender = st.sidebar.radio("Gender", options=[1, 2])
     Age= st.sidebar.number_input("Age at onset (year)", 0, 100, 1)
@@ -297,7 +297,7 @@ def run_model_c_page():
         # 僅保留模型實際特徵
         input_df = input_df[model_feature_names]
         
-        predict_and_explain(model, x_train, input_df, "模型 B")
+        predict_and_explain(model, x_train, input_df, "模型 C")
 # ------------------------- 主控制邏輯 -------------------------
 
 if model_choice == "EOMG":
