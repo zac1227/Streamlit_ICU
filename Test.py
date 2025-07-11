@@ -28,9 +28,10 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
     try:
         # 特徵對齊
+        # 確保順序正確（只保留模型訓練時的特徵）
         model_feature_names = model.get_booster().feature_names
         input_df = input_df[model_feature_names]
-        background = x_train[model_feature_names].sample(50, random_state=42)
+        background = x_train[model_feature_names]
 
          # 預測
         proba = model.predict_proba(input_df)[0]
