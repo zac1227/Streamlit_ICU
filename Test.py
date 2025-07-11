@@ -41,7 +41,8 @@ def predict_and_explain(model, x_train, input_df, model_name):
             st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
-
+        background_np = background.values
+        input_df_np = input_df.values
         # SHAP 解釋
         explainer = shap.KernelExplainer(model.predict_proba, background)
         shap_values = explainer.shap_values(input_df)
