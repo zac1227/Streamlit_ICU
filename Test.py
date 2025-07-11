@@ -100,9 +100,9 @@ def run_model_a_page():
     Anti_MuSK = st.sidebar.radio("Anti-MuSK", options=[0, 1])  # 0 = No, 1 = Yes
     Anti_AChR = st.sidebar.radio("Anti-AChR", options=[0, 1])  # 0 = No, 1 = Yes
     dSN = st.sidebar.radio("dSN", options=[0, 1])  # 0 = No, 1 = Yes
-    Thymoma = st.sidebar.number_input("Thymoma", 0, 1, 0)
+    Thymoma = st.sidebar.number_input("Thymoma", 0, 4, 0)
     Thymic = st.sidebar.radio("Thymic hyperplasia", options=[0, 1])  # 0 = No, 1 = Yes
-    Thymectomy = st.sidebar.number_input("Thymectomy", 0, 1, 0)
+    Thymectomy = st.sidebar.number_input("Thymectomy", 0, 3, 0)
 
     NLR = st.sidebar.number_input("NLR", 0.0, 100.0, 0.0)
     PLR = st.sidebar.number_input("PLR", 0.0, 1000.0, 0.0)
