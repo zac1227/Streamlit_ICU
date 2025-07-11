@@ -53,7 +53,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         # 選擇對應類別的 SHAP 解釋值
         shap_val = shap_values[pred_class][0]
         base_val = explainer.expected_value[pred_class]
-
+        print(shap_val, base_val)
         # 畫圖
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
