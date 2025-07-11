@@ -37,7 +37,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         
 
         if pred_class == 1:
-            st.error("預測結果：ICU admission")
+            st.success("預測結果：ICU admission")
         else:
             st.success("預測結果：Not ICU admission")
 
