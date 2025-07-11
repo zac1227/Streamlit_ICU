@@ -84,29 +84,30 @@ def run_model_a_page():
     x_train = x.drop(columns=[ "Y","MGFA clinical classification"])
     # 輸入變數
     Gender = st.sidebar.radio("Gender", options=[1, 2])
-    BMI = st.sidebar.number_input("BMI", 10.0, 40.0, 22.5)
-    Infection = st.sidebar.number_input("Infection at admission", 0, 1, 0)
-    Thyroid = st.sidebar.number_input("Thyroid disease", 0, 1, 0)
-    Auto = st.sidebar.number_input("Autoimmune disease", 0, 1, 0)
-    Diabetes = st.sidebar.number_input("Diabetes", 0, 1, 0)
-    Hypertension = st.sidebar.number_input("Hypertension", 0, 1,0)
-    ASCVD = st.sidebar.number_input("ASCVD", 0, 1, 0)
-    Chronic = st.sidebar.number_input("Chronic lung disease", 0, 1, 0)
-    Good = st.sidebar.number_input("Good syndrome", 0, 1, 0)
+    BMI = st.sidebar.number_input("BMI", 10.0, 50.0, 22.5)
+    Infection = st.sidebar.radio("Infection at admission", options=[0, 1])  # 0 = No, 1 = Yes
+    Thyroid = st.sidebar.radio("Thyroid disease", options=[0, 1])  # 0 = No, 1 = Yes
+    Auto = st.sidebar.radio("Autoimmune disease", options=[0, 1])  # 0 = No, 1 = Yes
+    Diabetes = st.sidebar.radio("Diabetes", options=[0, 1])  # 0 = No, 1 = Yes
+    Hypertension = st.sidebar.radio("Hypertension", options=[0, 1])  # 0 = No, 1 = Yes
+    ASCVD = st.sidebar.radio("ASCVD", options=[0, 1])  # 0 = No, 1 = Yes
+    Chronic = st.sidebar.radio("Chronic lung disease", options=[0, 1])  # 0 = No, 1 = Yes
+    Good = st.sidebar.radio("Good syndrome", options=[0, 1])  # 0 = No, 1 = Yes
     Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 120, 0)
-    
+
     Prednisolone = st.sidebar.number_input("Prednisolone daily dose before admission", 0, 100, 0)
-    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 1, 0)
-    Anti_MuSK = st.sidebar.number_input("Anti-MuSK", 0, 1, 0)
-    Anti_AChR = st.sidebar.number_input("Anti-AChR", 0, 1, 0)
-    dSN = st.sidebar.number_input("dSN", 0, 1, 0)
+    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 3, 0)
+    Anti_MuSK = st.sidebar.radio("Anti-MuSK", options=[0, 1])  # 0 = No, 1 = Yes
+    Anti_AChR = st.sidebar.radio("Anti-AChR", options=[0, 1])  # 0 = No, 1 = Yes
+    dSN = st.sidebar.radio("dSN", options=[0, 1])  # 0 = No, 1 = Yes
     Thymoma = st.sidebar.number_input("Thymoma", 0, 1, 0)
-    Thymic = st.sidebar.number_input("Thymic hyperplasia", 0, 1, 0)
+    Thymic = st.sidebar.radio("Thymic hyperplasia", options=[0, 1])  # 0 = No, 1 = Yes
     Thymectomy = st.sidebar.number_input("Thymectomy", 0, 1, 0)
-    NLR = st.sidebar.number_input("NLR", 0.0, 20.0, 2.0)
-    PLR = st.sidebar.number_input("PLR", 0.0, 1000.0, 100.0)
-    LMR = st.sidebar.number_input("LMR", 0.0, 20.0, 2.0)
-    SII = st.sidebar.number_input("SII", 0.0, 1000.0, 100.0)
+
+    NLR = st.sidebar.number_input("NLR", 0.0, 100.0, 0.0)
+    PLR = st.sidebar.number_input("PLR", 0.0, 1000.0, 0.0)
+    LMR = st.sidebar.number_input("LMR", 0.0, 20.0, 0.0)
+    SII = st.sidebar.number_input("SII", 0.0, 10000000.0, 0.0)
     
     # 建立 dict（易於維護）
     input_dict = {
