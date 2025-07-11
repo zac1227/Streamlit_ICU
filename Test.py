@@ -44,13 +44,19 @@ def predict_and_explain(model, x_train, input_df, model_name):
         # SHAP 解釋
         explainer = shap.TreeExplainer(model, data=background,model_output="probability", feature_perturbation="interventional")
         shap_values = explainer.shap_values(input_df)
-
+        # ✅ 防止 index 錯誤
+        if isinstance(shap_values, list) and len(shap_values) > 1:
+            shap_val = shap_values[1][0]
+            base_val = explainer.expected_value[1]
+        else:
+            shap_val = shap_values[0]
+            base_val = explainer.expected_value
         st.subheader("SHAP Waterfall 解釋圖")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
-                values=shap_values[1][0],
-                base_values=explainer.expected_value[1],
+                values=shap_val,
+                base_values=base_val,
                 data=input_df.values[0],
                 feature_names=input_df.columns.tolist()
             ),
