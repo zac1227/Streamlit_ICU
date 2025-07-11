@@ -253,12 +253,12 @@ def run_model_c_page():
     ASCVD = st.sidebar.radio("ASCVD", options=[0, 1])  # 0 = No, 1 = Yes
     Chronic = st.sidebar.radio("Chronic lung disease", options=[0, 1])  # 0 = No, 1 = Yes
     Good = st.sidebar.radio("Good syndrome", options=[0, 1])  # 0 = No, 1 = Yes
-    Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 120, 0)
+    Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 300, 0)
     Prednisolone = st.sidebar.number_input("Prednisolone daily dose before admission", 0, 100, 0)
-    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 3, 0)
+    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 4, 0)
     NLR = st.sidebar.number_input("NLR", 0.0, 100.0, 0.0)
-    PLR = st.sidebar.number_input("PLR", 0.0, 1000.0, 0.0)
-    LMR = st.sidebar.number_input("LMR", 0.0, 20.0, 0.0)
+    PLR = st.sidebar.number_input("PLR", 0.0, 2000.0, 0.0)
+    LMR = st.sidebar.number_input("LMR", 0.0, 40.0, 0.0)
     SII = st.sidebar.number_input("SII", 0.0, 10000000.0, 0.0)
     
     # 建立 dict（易於維護）
@@ -321,12 +321,12 @@ def run_model_d_page():
     ASCVD = st.sidebar.radio("ASCVD", options=[0, 1])  # 0 = No, 1 = Yes
     Chronic = st.sidebar.radio("Chronic lung disease", options=[0, 1])  # 0 = No, 1 = Yes
     Good = st.sidebar.radio("Good syndrome", options=[0, 1])  # 0 = No, 1 = Yes
-    Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 120, 0)
+    Disease_duration= st.sidebar.number_input("Disease duration (month)", 0, 300, 0)
     Prednisolone = st.sidebar.number_input("Prednisolone daily dose before admission", 0, 100, 0)
-    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 3, 0)
+    Immunosuppressant = st.sidebar.number_input("Immunosuppressant at admission", 0, 4, 0)
     NLR = st.sidebar.number_input("NLR", 0.0, 100.0, 0.0)
-    PLR = st.sidebar.number_input("PLR", 0.0, 1000.0, 0.0)
-    LMR = st.sidebar.number_input("LMR", 0.0, 20.0, 0.0)
+    PLR = st.sidebar.number_input("PLR", 0.0, 2000.0, 0.0)
+    LMR = st.sidebar.number_input("LMR", 0.0, 40.0, 0.0)
     SII = st.sidebar.number_input("SII", 0.0, 10000000.0, 0.0)
     
     # 建立 dict（易於維護）
