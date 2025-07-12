@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import shap
 
 # ------------------------- 分頁切換 -------------------------
-model_choice = st.sidebar.selectbox("請選擇要執行的模型", [
+model_choice = st.sidebar.selectbox("Model", [
     "EOMG",
     "LOMG",
     "Thymoma",
@@ -23,7 +23,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
     import numpy as np
     import streamlit as st
     import xgboost as xgb
-    st.subheader("預測結果")
+    st.subheader("Predict result")
 
     try:
         # 特徵對齊
@@ -37,9 +37,9 @@ def predict_and_explain(model, x_train, input_df, model_name):
         
 
         if pred_class == 1:
-            st.error("預測結果：ICU admission")
+            st.error("Predict result：ICU admission")
         else:
-            st.success("預測結果：Not ICU admission")
+            st.success("Predict result：Not ICU admission")
 
         # SHAP 解釋
         explainer = shap.TreeExplainer(model, data=background,model_output="probability", feature_perturbation="interventional")
@@ -51,7 +51,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         else:
             shap_val = shap_values[0]
             base_val = explainer.expected_value
-        st.subheader("SHAP Waterfall 解釋圖")
+        st.subheader("SHAP Waterfall explanation")
         fig = plt.figure()
         shap.plots.waterfall(
             shap.Explanation(
@@ -66,7 +66,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         st.pyplot(fig)
 
     except Exception as e:
-        st.error(f"發生錯誤：{e}")
+        st.error(f"Error：{e}")
 
 
 
@@ -75,7 +75,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
 
 # ------------------------- 模型 A -------------------------
 def run_model_a_page():
-    st.title("EOMG 模型預測頁面")
+    st.title("Model EOMG prediction page")
     # 模型 & 資料（你之後替換正確路徑）
     import xgboost as xgb
     model = xgb.XGBClassifier()
@@ -140,7 +140,7 @@ def run_model_a_page():
     
 
 
-    if st.sidebar.button("預測模型"):
+    if st.sidebar.button("Predict"):
         # 用 input_dict 建立 DataFrame
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
@@ -151,12 +151,12 @@ def run_model_a_page():
         # 僅保留模型實際特徵
         input_df = input_df[model_feature_names]
         
-        predict_and_explain(model, x_train, input_df, "模型 A")
+        predict_and_explain(model, x_train, input_df, "model A")
 
 # ------------------------- 模型 B -------------------------
 
 def run_model_b_page():
-    st.title("LOMG 模型預測頁面")
+    st.title("Model LOMG prediction page")
     # 模型 & 資料（你之後替換正確路徑）
     import xgboost as xgb
     model = xgb.XGBClassifier()
@@ -218,7 +218,7 @@ def run_model_b_page():
     "SII": SII
 }
 
-    if st.sidebar.button("預測模型"):
+    if st.sidebar.button("Predict"):
         # 用 input_dict 建立 DataFrame
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
@@ -229,10 +229,10 @@ def run_model_b_page():
         # 僅保留模型實際特徵
         input_df = input_df[model_feature_names]
         
-        predict_and_explain(model, x_train, input_df, "模型 B")
+        predict_and_explain(model, x_train, input_df, "Model B")
 
 def run_model_c_page():
-    st.title("Thymoma 模型預測頁面")
+    st.title("Model Thymoma prediction page")
     # 模型 & 資料（你之後替換正確路徑）
     import xgboost as xgb
     model = xgb.XGBClassifier()
@@ -286,7 +286,7 @@ def run_model_c_page():
     "SII": SII
 }
 
-    if st.sidebar.button("預測模型"):
+    if st.sidebar.button("Predict"):
         # 用 input_dict 建立 DataFrame
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
@@ -297,10 +297,10 @@ def run_model_c_page():
         # 僅保留模型實際特徵
         input_df = input_df[model_feature_names]
         
-        predict_and_explain(model, x_train, input_df, "模型 C")
+        predict_and_explain(model, x_train, input_df, "Model C")
 
 def run_model_d_page():
-    st.title("NonThymoma 模型預測頁面")
+    st.title("Model NonThymoma prediction page")
     # 模型 & 資料（你之後替換正確路徑）
     import xgboost as xgb
     model = xgb.XGBClassifier()
@@ -354,7 +354,7 @@ def run_model_d_page():
     "SII": SII
 }
 
-    if st.sidebar.button("預測模型"):
+    if st.sidebar.button("Predict"):
         # 用 input_dict 建立 DataFrame
        # 建立 DataFrame（按照 x_train 的欄位順序）
         input_df = pd.DataFrame([[input_dict[col] for col in x_train.columns]], columns=x_train.columns)
@@ -365,7 +365,7 @@ def run_model_d_page():
         # 僅保留模型實際特徵
         input_df = input_df[model_feature_names]
         
-        predict_and_explain(model, x_train, input_df, "模型 D")
+        predict_and_explain(model, x_train, input_df, "Model D")
 # ------------------------- 主控制邏輯 -------------------------
 
 if model_choice == "EOMG":
