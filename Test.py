@@ -47,9 +47,13 @@ def predict_and_explain(model, x_train, input_df, model_name):
         # ✅ 防止 index 錯誤
         if isinstance(shap_values, list) and len(shap_values) > 1:
             shap_val = shap_values[1][0]
+            st.write("Shap_values",shap_values)
+            st.write(shap_val)
             base_val = explainer.expected_value[1]
         else:
             shap_val = shap_values[0]
+            st.write("Shap_values",shap_values)
+            st.write(shap_val)
             base_val = explainer.expected_value
         st.subheader("SHAP Waterfall explanation")
         fig = plt.figure()
