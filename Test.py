@@ -53,7 +53,7 @@ def predict_and_explain(model, x_train, input_df, model_name):
         else:
             shap_val = shap_values[0]
             st.write("Shap_values",shap_values)
-            st.write(shap_val)
+            st.write("SHAP",shap_val)
             base_val = explainer.expected_value
         st.subheader("SHAP Waterfall explanation")
         fig = plt.figure()
